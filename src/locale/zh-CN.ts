@@ -1,11 +1,21 @@
-import localeMessageBox from '@/components/message-box/locale/zh-CN';
 import localeLogin from '@/views/login/locale/zh-CN';
+import localeMessageBox from '@/components/message-box/locale/zh-CN';
 
 import localeWorkplace from '@/views/dashboard/workplace/locale/zh-CN';
+import localeContainer from '@/views/local/containers/locale/zh-CN';
 
 import localeSettings from './zh-CN/settings';
 
 export default {
+  'project.title': '桌面管理系统',
+  'menu.local': '本地',
+  'menu.networks': '网络',
+  'menu.stacks': '栈',
+  'menu.volumes': '数据卷',
+  'menu.images': '镜像',
+  'menu.containers': '容器',
+  'menu.containerList': '容器列表',
+  'menu.containerDetails': '容器详情',
   'menu.dashboard': '仪表盘',
   'menu.server.dashboard': '仪表盘-服务端',
   'menu.server.workplace': '工作台-服务端',
@@ -22,7 +32,8 @@ export default {
   'navbar.docs': '文档中心',
   'navbar.action.locale': '切换为中文',
   ...localeSettings,
-  ...localeMessageBox,
   ...localeLogin,
   ...localeWorkplace,
+  ...localeMessageBox,
+  ...localeContainer,
 };

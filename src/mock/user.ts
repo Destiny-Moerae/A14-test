@@ -15,6 +15,7 @@ setupMock({
     Mock.mock(new RegExp('/api/user/info'), () => {
       if (isLogin()) {
         const role = window.localStorage.getItem('userRole') || 'admin';
+
         return successResponseWrap({
           name: '王立群',
           avatar:
@@ -36,6 +37,51 @@ setupMock({
         });
       }
       return failResponseWrap(null, '未登录', 50008);
+    });
+
+    // 根据本地存储的token获得用户信息
+    Mock.mock(new RegExp('/api/user/tokenInfo'), (data: any) => {
+      const token = data.body;
+      if (token === '12345') {
+        return successResponseWrap({
+          name: '御坂美琴',
+          avatar:
+            'https://pic3.zhimg.com/v2-ab5c6c7643d5bedeece7fccb5d7ec2a1_r.jpg',
+          email: 'wangliqun@email.com',
+          job: 'frontend',
+          jobName: '前端艺术家',
+          organization: 'Frontend',
+          organizationName: '前端',
+          location: 'beijing',
+          locationName: '北京',
+          introduction: '人潇洒，性温存',
+          personalWebsite: 'https://www.arco.design',
+          phone: '150****0000',
+          registrationDate: '2013-05-10 12:10:00',
+          accountId: '15012312300',
+          certification: 1,
+          role: 'admin',
+        });
+      }
+      return successResponseWrap({
+        name: '白井黑子',
+        avatar:
+          'https://c-ssl.duitang.com/uploads/item/202003/21/20200321042542_tuirr.png',
+        email: 'wangliqun@email.com',
+        job: 'frontend',
+        jobName: '前端艺术家',
+        organization: 'Frontend',
+        organizationName: '前端',
+        location: 'beijing',
+        locationName: '北京',
+        introduction: '人潇洒，性温存',
+        personalWebsite: 'https://www.arco.design',
+        phone: '150****0000',
+        registrationDate: '2013-05-10 12:10:00',
+        accountId: '15012312300',
+        certification: 1,
+        role: 'user',
+      });
     });
 
     // 登录

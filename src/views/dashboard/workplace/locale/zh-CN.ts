@@ -1,5 +1,12 @@
 export default {
   'menu.dashboard.workplace': '工作台',
+  'workplace.title': '工作台',
+  'workplace.environmentInfo': '环境配置',
+  'workplace.mores': '更多',
+  'workplace.containers': '容器',
+  'workplace.images': '镜像',
+  'workplace.networks': '网络',
+  'workplace.volumes': '数据卷',
   'workplace.welcome': '欢迎回来！',
   'workplace.balance': '余额（元）',
   'workplace.order.pending': '待支付',

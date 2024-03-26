@@ -1,84 +1,186 @@
 <template>
-  <div class="banner">
-    <div class="banner-inner">
-      <a-carousel class="carousel" animation-name="fade">
-        <a-carousel-item v-for="item in carouselItem" :key="item.slogan">
-          <div :key="item.slogan" class="carousel-item">
-            <div class="carousel-title">{{ item.slogan }}</div>
-            <div class="carousel-sub-title">{{ item.subSlogan }}</div>
-            <img class="carousel-image" :src="item.image" />
-          </div>
-        </a-carousel-item>
-      </a-carousel>
+  <div class="left">
+    <div class="banner">
+      <div class="message">
+        <h1>最近的登录</h1>
+        <p>选择你的用户或者添加一个用户</p>
+      </div>
+      <div class="pictures">
+        <div class="picture" v-show="isRemenberPassword">
+          <img :src="storageRole.avatar" alt="加载失败" @click="clickImg">
+          <div class="name">{{ storageRole.username }}</div>
+          <div class="no" @click="clickNo"><icon-close-circle size="20px" /></div>
+
+        </div>
+        <div class="picture" @click="clickToRegister">
+          <img src="@/assets/images/avatar2.png" alt="">
+          <div class="name">Add an account</div>
+
+        </div>
+
+      </div>
     </div>
   </div>
 </template>
 
-<script lang="ts" setup>
-  import { computed } from 'vue';
-  import { useI18n } from 'vue-i18n';
-  import bannerImage from '@/assets/images/login-banner.png';
 
-  const { t } = useI18n();
-  const carouselItem = computed(() => [
-    {
-      slogan: t('login.banner.slogan1'),
-      subSlogan: t('login.banner.subSlogan1'),
-      image: bannerImage,
+
+
+<script setup lang='ts'>
+import { reactive, ref } from 'vue';
+import { onBeforeMount, onMounted } from 'vue';
+import { useUserStore } from '@/store';
+import router from '@/router';
+
+const userStore = useUserStore()
+const storageRole = reactive({
+  avatar: "",
+  username: ""
+})
+const isRemenberPassword = ref<boolean>()
+
+onBeforeMount(async () => {
+
+  const token = ref(localStorage.getItem("token") as string)
+
+  const result = await userStore.tokenInfo(token.value)
+
+  storageRole.avatar = result.avatar as string
+  storageRole.username = result.name as string
+
+})
+interface loginConfig {
+  rememberPassword: string,
+  username: string | null,
+  password: string | null
+}
+onMounted(() => {
+  const savedConfig = localStorage.getItem("login-config");
+  let config: loginConfig;
+  // 使用类型断言来将返回值转换为你定义的类型
+  if (savedConfig) {
+    config = JSON.parse(savedConfig) as loginConfig;
+    isRemenberPassword.value = JSON.parse(config.rememberPassword)
+  } else {
+    // 如果没有保存的配置，则创建一个默认的配置
+    config = {
+      rememberPassword: 'false',
+      username: null,
+      password: null
+    };
+  }
+
+})
+const clickImg = async () => {
+  const config = JSON.parse(localStorage.getItem("login-config") as string);
+  const storageInfo = {
+    username: config.username,
+    password: config.password
+  }
+  await userStore.login(storageInfo);
+  const { redirect, ...othersQuery } = router.currentRoute.value.query;
+
+  router.push({
+    name: (redirect as string) || 'Workplace',
+    query: {
+      ...othersQuery,
     },
-    {
-      slogan: t('login.banner.slogan2'),
-      subSlogan: t('login.banner.subSlogan2'),
-      image: bannerImage,
-    },
-    {
-      slogan: t('login.banner.slogan3'),
-      subSlogan: t('login.banner.subSlogan3'),
-      image: bannerImage,
-    },
-  ]);
+  });
+}
+
+const clickNo = () => {
+  isRemenberPassword.value = false
+}
+const clickToRegister = () => {
+  userStore.isShowRegister = true
+}
 </script>
+<style scoped>
+.left {
+  position: relative;
+}
 
-<style lang="less" scoped>
-  .banner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.banner {
+  position: absolute;
+  top: 48%;
+  left: 70%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  width: 400px;
+  height: 400px;
+  background-color: rgb(251, 251, 251);
+  padding-left: 20px;
+  border-radius: 20px;
+}
 
-    &-inner {
-      flex: 1;
-      height: 100%;
-    }
+.message {
+  margin-top: 40px;
+
+  h1 {
+    color: rgb(51, 51, 51)
   }
 
-  .carousel {
-    height: 100%;
-
-    &-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-    }
-
-    &-title {
-      color: var(--color-fill-1);
-      font-weight: 500;
-      font-size: 20px;
-      line-height: 28px;
-    }
-
-    &-sub-title {
-      margin-top: 8px;
-      color: var(--color-text-3);
-      font-size: 14px;
-      line-height: 22px;
-    }
-
-    &-image {
-      width: 320px;
-      margin-top: 30px;
-    }
+  p {
+    color: rgb(111, 111, 111)
   }
+}
+
+.pictures {
+  display: flex;
+
+}
+
+.picture {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  width: 132px;
+  border: solid 2px grey;
+  border-radius: 10px;
+  margin-right: 20px;
+
+  transition-property: all;
+  transition-duration: 0.5s;
+  transition-timing-function: ease;
+  transition-delay: 0s;
+
+  cursor: pointer;
+}
+
+.picture:hover {
+  transform: scale(1.05);
+}
+
+
+img {
+  width: 130px;
+  height: 130px;
+  border-radius: 10px 10px 0 0;
+}
+
+.name {
+  display: inline-block;
+  margin: 0 auto;
+  color: rgb(51, 51, 51);
+  line-height: 24px;
+}
+
+.no {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.no:hover {
+  background-color: #DCDCDC;
+}
+
+.no:active {
+  background-color: gray;
+}
 </style>

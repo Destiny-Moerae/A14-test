@@ -1,5 +1,12 @@
 export default {
   'menu.dashboard.workplace': 'Workplace',
+  'workplace.title': 'Workplace',
+  'workplace.environmentInfo': 'EnvironmentInfo',
+  'workplace.containers': 'containers',
+  'workplace.mores': 'Mores',
+  'workplace.images': 'images',
+  'workplace.networks': 'networks',
+  'workplace.volumes': 'volumes',
   'workplace.welcome': 'Welcome!',
   'workplace.balance': 'Balance (CNY)',
   'workplace.order.pending': 'Pending',

@@ -1,11 +1,21 @@
-import localeMessageBox from '@/components/message-box/locale/en-US';
 import localeLogin from '@/views/login/locale/en-US';
+import localeMessageBox from '@/components/message-box/locale/en-US';
 
 import localeWorkplace from '@/views/dashboard/workplace/locale/en-US';
+import localeContainer from '@/views/local/containers/locale/en-US';
 
 import localeSettings from './en-US/settings';
 
 export default {
+  'project.title': 'Desktop management system',
+  'menu.local': 'Local',
+  'menu.networks': 'Networks',
+  'menu.stacks': 'Stacks',
+  'menu.volumes': 'Volumes',
+  'menu.images': 'Images',
+  'menu.containers': 'Containers',
+  'menu.containerList': 'Container List',
+  'menu.containerDetails': 'Container Details',
   'menu.dashboard': 'Dashboard',
   'menu.server.dashboard': 'Dashboard-Server',
   'menu.server.workplace': 'Workplace-Server',
@@ -22,7 +32,8 @@ export default {
   'navbar.docs': 'Docs',
   'navbar.action.locale': 'Switch to English',
   ...localeSettings,
-  ...localeMessageBox,
   ...localeLogin,
   ...localeWorkplace,
+  ...localeMessageBox,
+  ...localeContainer,
 };

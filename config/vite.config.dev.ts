@@ -10,6 +10,14 @@ export default mergeConfig(
       fs: {
         strict: true,
       },
+      proxy: {
+        '/api': {
+          // target: 'http://192.168.1.103:8080',
+          target: 'http://127.0.0.1:4523/m1/3975126-0-default',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ''), // 不可以省略rewrite
+        },
+      },
     },
     plugins: [
       eslint({

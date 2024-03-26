@@ -4,6 +4,7 @@ import {
   logout as userLogout,
   getUserInfo,
   LoginData,
+  getUserInfoByToken,
 } from '@/api/user';
 import { setToken, clearToken } from '@/utils/auth';
 import { removeRouteListener } from '@/utils/route-listener';
@@ -28,6 +29,7 @@ const useUserStore = defineStore('user', {
     accountId: undefined,
     certification: undefined,
     role: '',
+    isShowRegister: false,
   }),
 
   getters: {
@@ -60,11 +62,18 @@ const useUserStore = defineStore('user', {
       this.setInfo(res.data);
     },
 
+    async tokenInfo(token: string) {
+      const res = await getUserInfoByToken(token);
+      this.setInfo(res.data);
+      return res.data;
+    },
+
     // Login
     async login(loginForm: LoginData) {
       try {
         const res = await userLogin(loginForm);
         setToken(res.data.token);
+        this.tokenInfo(res.data.token);
       } catch (err) {
         clearToken();
         throw err;
@@ -73,7 +82,7 @@ const useUserStore = defineStore('user', {
     logoutCallBack() {
       const appStore = useAppStore();
       this.resetInfo();
-      clearToken();
+      // clearToken();
       removeRouteListener();
       appStore.clearServerMenu();
     },

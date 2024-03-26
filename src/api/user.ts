@@ -22,6 +22,10 @@ export function getUserInfo() {
   return axios.post<UserState>('/api/user/info');
 }
 
+export function getUserInfoByToken(data: string) {
+  return axios.post<UserState>('/api/user/tokenInfo', data);
+}
+
 export function getMenuList() {
   return axios.post<RouteRecordNormalized[]>('/api/user/menu');
 }
